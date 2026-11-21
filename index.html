@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#18342c">
-<meta name="description" content="A 75-question compass for exploring your views on Islamic law, government, economics, and community life.">
+<meta name="description" content="A 30-question compass for exploring your views on Islamic law, government, economics, and community life.">
 <title>Islamic Compass</title>
 <style>
 :root {
@@ -138,7 +138,7 @@ dialog textarea { width: 100%; min-height: 12rem; margin-top: .65rem; font: inhe
 <header class="site-header">
   <div class="wrap header-inner">
     <div class="brand"><span class="brand-mark" aria-hidden="true">✧</span> Islamic Compass</div>
-    <span class="header-meta">75 questions</span>
+    <span class="header-meta">30 questions</span>
   </div>
 </header>
 <main>
@@ -147,12 +147,12 @@ dialog textarea { width: 100%; min-height: 12rem; margin-top: .65rem; font: inhe
       <div class="wrap hero-inner">
         <div>
           <h1 id="welcome-heading" class="screen-heading" tabindex="-1">Islamic Compass</h1>
-          <p>Where do you stand on Islamic law, political power, and public life? Respond to 75 statements and plot your views on five axes.</p>
+          <p>Where do you stand on Islamic law, political power, and public life? Respond to 30 statements and plot your views on five axes.</p>
           <div class="action-row">
             <button type="button" id="start" class="btn primary">Begin the test</button>
             <button type="button" id="restart-home" class="btn secondary" hidden>Start over</button>
           </div>
-          <span class="hero-meta" id="welcome-meta">About 12–18 minutes · Progress saved on this device</span>
+          <span class="hero-meta" id="welcome-meta">About 5–8 minutes · Progress saved on this device</span>
         </div>
         <div class="rose" aria-hidden="true">
           <span class="ring"></span><span class="ring"></span><span class="ring"></span><span class="cross"></span>
@@ -171,7 +171,7 @@ dialog textarea { width: 100%; min-height: 12rem; margin-top: .65rem; font: inhe
   </section>
   <section id="quiz" class="content" aria-labelledby="question" hidden>
     <div class="quiz-status"><span id="question-count"></span><span id="answer-count"></span></div>
-    <progress id="progress" max="75" value="0" aria-label="Questions completed"></progress>
+    <progress id="progress" max="30" value="0" aria-label="Questions completed"></progress>
     <div class="panel">
       <p id="topic" class="eyebrow"></p>
       <h2 id="question" class="question screen-heading" tabindex="-1"></h2>
@@ -218,8 +218,8 @@ dialog textarea { width: 100%; min-height: 12rem; margin-top: .65rem; font: inhe
     </div>
     <details class="panel">
       <summary>How scoring works</summary>
-      <p>Each axis has 15 statements. Strong agreement and disagreement count for two points. Agreement and disagreement count for one. Neutral counts as zero. Some statements are scored in reverse so agreement can move the score toward either end of an axis.</p>
-      <p>Each total is divided by the maximum possible for the statements you scored, then scaled from −100 to +100. The left and lower ends are negative. Skipped answers are excluded. An axis appears once you score at least five statements on it.</p>
+      <p>Each axis has six statements. Strong agreement and disagreement count for two points. Agreement and disagreement count for one. Neutral counts as zero. Some statements are scored in reverse so agreement can move the score toward either end of an axis.</p>
+      <p>Each total is divided by the maximum possible for the statements you scored, then scaled from −100 to +100. The left and lower ends are negative. Skipped answers are excluded. An axis appears once you score at least three statements on it.</p>
       <p>A score near the middle can reflect consistently moderate answers or strong views that pull in different directions. Use your answer review to see which statements mattered to you.</p>
     </details>
   </section>
@@ -260,21 +260,12 @@ const axes = [
     ends: ['Established legal precedent', 'Contextual legal reasoning'],
     about: ['You give established schools and recognized legal opinions greater weight when applying Islamic law.', 'You give qualified scholars greater latitude to reconsider legal applications as circumstances change.'],
     items: [
-      [1, 'When a new technology changes how a rule affects people, qualified scholars should reconsider its application.'],
-      [-1, 'Ordinary Muslims should normally follow a single recognized school of Islamic law in their day-to-day practice.'],
-      [1, 'A religious ruling with strong textual support from another school should be available to people who normally follow a different school.'],
-      [-1, 'When scholars disagree about the purpose of a rule, a well-established legal opinion should carry more weight than a new interpretation.'],
-      [1, 'Local customs should influence how Islamic contracts are understood where the sources leave room for interpretation.'],
-      [-1, 'When teaching Islamic law to beginners, teachers should start with the standard rulings of one school before introducing competing views.'],
-      [1, 'When weighing rulings on a new medical technology, jurists should give evidence from clinicians significant weight.'],
-      [-1, 'When modern legal scholars disagree, continuity with the community’s established practice should usually break the tie.'],
-      [1, 'A fatwa council should revisit an inherited analogy if the facts that made the cases similar no longer hold.'],
-      [-1, 'Scholars updating a standard marriage contract should keep its inherited legal form where it remains workable.'],
-      [1, 'Qualified scholars should be willing to revisit a long-standing ruling if its application repeatedly produces a harm the ruling was meant to prevent.'],
-      [-1, 'Qualified jurists should set a higher bar for adopting a novel ruling than for choosing a recognized minority opinion.'],
-      [1, 'Fatwa councils in different countries can reasonably reach different answers about the same financial product when local conditions differ.'],
-      [-1, 'A ruling accepted across several legal schools should carry a strong presumption in its favor when facts and circumstances are much the same.'],
-      [1, 'When a modern dispute has no clear precedent, scholars should be willing to propose a ruling based on the broader purposes of Islamic law.']
+      [1, 'When a new technology changes how a rule affects people, qualified scholars should reconsider its application.', 59],
+      [-1, 'Ordinary Muslims should normally follow a single recognized school of Islamic law in their day-to-day practice.', 9],
+      [-1, 'When scholars disagree about the purpose of a rule, a well-established legal opinion should carry more weight than a new interpretation.', 60],
+      [1, 'Local customs should influence how Islamic contracts are understood where the sources leave room for interpretation.', 62],
+      [1, 'Qualified scholars should be willing to revisit a long-standing ruling if its application repeatedly produces a harm the ruling was meant to prevent.', 67],
+      [-1, 'A ruling accepted across several legal schools should carry a strong presumption in its favor when facts and circumstances are much the same.', 34]
     ]
   },
   {
@@ -282,21 +273,12 @@ const axes = [
     ends: ['Less direct religious oversight', 'More direct religious oversight'],
     about: ['You favor greater discretion for civil institutions when they make public policy.', 'You favor giving Islamic law and religious institutions a more direct role in government.'],
     items: [
-      [1, 'Islamic law should be an explicit constitutional source for evaluating legislation.'],
-      [-1, 'A council of religious scholars should advise lawmakers without having the power to block legislation.'],
-      [1, 'A court should be able to invalidate a statute solely on the basis that it conflicts with a constitutionally recognized principle of Islamic law.'],
-      [-1, 'A civil marriage contract should give willing adult spouses full legal recognition regardless of whether they choose a religious ceremony.'],
-      [1, 'Government should be responsible for collecting and distributing zakat, the obligatory alms owed by eligible Muslims.'],
-      [-1, 'Public office should be open to qualified citizens regardless of their religion.'],
-      [1, 'A national regulator should be able to deny financial products a license based on an Islamic finance standard.'],
-      [-1, 'Muslim families should be free to use the ordinary civil courts for inheritance disputes even when a religious forum is available.'],
-      [1, 'A national curriculum should require Muslim students in public schools to study Islamic jurisprudence.'],
-      [-1, 'Religious congregations should choose their own prayer leaders without routine state approval.'],
-      [1, 'Publicly funded religious scholars should routinely review proposed family laws for consistency with Islamic jurisprudence.'],
-      [-1, 'Public agencies should justify rules binding all citizens in terms accessible to people of any faith.'],
-      [1, 'The state should be able to require Muslim-owned businesses to accommodate communal Friday prayers.'],
-      [-1, 'Public arts grants should be open to applicants without a religious review of their work.'],
-      [1, 'The state should set national standards for official training and certification of imams.']
+      [1, 'Islamic law should be an explicit constitutional source for evaluating legislation.', 63],
+      [-1, 'A council of religious scholars should advise lawmakers without having the power to block legislation.', 49],
+      [1, 'Government should be responsible for collecting and distributing zakat, the obligatory alms owed by eligible Muslims.', 73],
+      [-1, 'Public office should be open to qualified citizens regardless of their religion.', 52],
+      [1, 'A national regulator should be able to deny financial products a license based on an Islamic finance standard.', 22],
+      [-1, 'Muslim families should be free to use the ordinary civil courts for inheritance disputes even when a religious forum is available.', 16]
     ]
   },
   {
@@ -304,21 +286,12 @@ const axes = [
     ends: ['Power concentrated in leadership', 'Power checked and shared'],
     about: ['You favor giving national leaders more discretion and keeping key decisions centralized.', 'You favor distributing power through representation, independent oversight, and local decision-making.'],
     items: [
-      [1, 'Citizens should be able to replace the national leadership through periodic competitive elections.'],
-      [-1, 'An executive should be able to put an urgent policy into effect without first getting assembly approval, subject to a later vote.'],
-      [1, 'An elected assembly should have final authority over the annual budget.'],
-      [-1, 'Local leaders should generally be appointed by the national government to encourage consistent public services across regions.'],
-      [1, 'Independent courts should be able to review executive orders even during a declared emergency.'],
-      [-1, 'A chief executive chosen by a council of qualified representatives can be preferable to one elected by a direct national vote.'],
-      [1, 'Local councils should control a meaningful share of local taxes and spending.'],
-      [-1, 'Experienced executives should be eligible to remain in office without a fixed term limit.'],
-      [1, 'Opposition parties should be free to organize openly and compete for power under the same rules as governing parties.'],
-      [-1, 'The executive should have wide discretion to appoint ministers without confirmation hearings.'],
-      [1, 'Citizens should be able to petition for a binding public vote on major constitutional changes.'],
-      [-1, 'The constitution should give the executive a strong veto even when a large legislative majority supports a bill.'],
-      [1, 'A public auditor should be able to publish findings about senior officials without executive permission.'],
-      [-1, 'When national and local authorities disagree on a matter of domestic policy, the national government should normally have the final word.'],
-      [1, 'A legislature should be able to replace a government that loses its confidence before the next regular election.']
+      [1, 'Citizens should be able to replace the national leadership through periodic competitive elections.', 0],
+      [-1, 'Local leaders should generally be appointed by the national government to encourage consistent public services across regions.', 54],
+      [1, 'Independent courts should be able to review executive orders even during a declared emergency.', 10],
+      [-1, 'Experienced executives should be eligible to remain in office without a fixed term limit.', 7],
+      [1, 'Citizens should be able to petition for a binding public vote on major constitutional changes.', 19],
+      [-1, 'The constitution should give the executive a strong veto even when a large legislative majority supports a bill.', 18]
     ]
   },
   {
@@ -326,21 +299,12 @@ const axes = [
     ends: ['Market-led allocation', 'Public planning and provision'],
     about: ['You favor allocating more resources through market prices and private enterprise.', 'You favor directing more resources through public planning, ownership, or provision.'],
     items: [
-      [1, 'Public electricity and water networks should generally be publicly owned.'],
-      [-1, 'Outside emergencies or abuse of market power, sellers should be free to set staple-food prices.'],
-      [1, 'State-owned enterprises should be required to meet binding national targets for production or investment.'],
-      [-1, 'Privately owned firms should be allowed to compete in most industries where state-owned firms operate.'],
-      [1, 'Public enterprises should give worker representatives a formal role in management decisions.'],
-      [-1, 'Government assistance for low-income households should usually take the form of cash they can spend in the market.'],
-      [1, 'The state should guarantee basic healthcare through a universal publicly financed system.'],
-      [-1, 'Charitable endowments and nonprofit clinics should have substantial discretion to run services independently of national economic plans.'],
-      [1, 'Government should use profits from publicly owned natural resources to fund a regular citizen dividend or universal services.'],
-      [-1, 'Decisions about what factories produce should generally be left to businesses and their customers.'],
-      [1, 'When housing costs rise sharply, government should build affordable homes directly at a large scale.'],
-      [-1, 'Governments should generally use competitive private builders for publicly funded infrastructure.'],
-      [1, 'A public employment program should offer a job to anyone unable to find one in the private sector.'],
-      [-1, 'As a general rule, people should need no occupational license for low-risk trades.'],
-      [1, 'The government should require large firms that receive public subsidies to meet wage and local hiring targets.']
+      [1, 'Public electricity and water networks should generally be publicly owned.', 40],
+      [-1, 'Outside emergencies or abuse of market power, sellers should be free to set staple-food prices.', 71],
+      [1, 'State-owned enterprises should be required to meet binding national targets for production or investment.', 46],
+      [-1, 'Privately owned firms should be allowed to compete in most industries where state-owned firms operate.', 69],
+      [1, 'The state should guarantee basic healthcare through a universal publicly financed system.', 32],
+      [-1, 'Decisions about what factories produce should generally be left to businesses and their customers.', 61]
     ]
   },
   {
@@ -348,41 +312,27 @@ const axes = [
     ends: ['Shared communal expectations', 'Household and individual discretion'],
     about: ['You favor common community expectations in shared spaces and institutions.', 'You favor giving households and individuals more discretion over social arrangements.'],
     items: [
-      [1, 'Muslim community centers should offer comparable activities at different levels of gender separation so families can choose.'],
-      [-1, 'Stores serving a predominantly Muslim neighborhood should generally close during Friday congregational prayer.'],
-      [1, 'Schools should let families choose among several dress options when each meets a common modesty standard.'],
-      [-1, 'Older relatives should normally have a meaningful say in a young adult’s choice of spouse.'],
-      [1, 'An adult couple and their parents should be equally respected whether the couple chooses to live independently or in a multigenerational household.'],
-      [-1, 'Schools in a predominantly Muslim community should set aside part of the day for communal prayer for Muslim students.'],
-      [1, 'Community organizations should give households flexibility about how they meet common volunteer and charitable commitments.'],
-      [-1, 'A neighborhood association should be able to adopt stricter modest dress rules for its own events than nearby associations use.'],
-      [1, 'Schools should let families decide whether their children join optional religious celebrations.'],
-      [-1, 'Local shops should follow shared neighborhood expectations for their Ramadan business hours.'],
-      [1, 'Adults should decide for themselves how to divide paid work and caregiving in their household.'],
-      [-1, 'Youth organizations should generally agree on common supervision rules for social events across the community.'],
-      [1, 'Public libraries in a predominantly Muslim neighborhood should let families choose among books that reflect different approaches to family life.'],
-      [-1, 'Community venues should follow a shared standard on music and entertainment at celebrations they host.'],
-      [1, 'Neighborhoods should accommodate different customary ways of celebrating Eid when practical.']
+      [1, 'Muslim community centers should offer comparable activities at different levels of gender separation so families can choose.', 24],
+      [-1, 'Stores serving a predominantly Muslim neighborhood should generally close during Friday congregational prayer.', 33],
+      [-1, 'Older relatives should normally have a meaningful say in a young adult’s choice of spouse.', 50],
+      [1, 'Schools should let families decide whether their children join optional religious celebrations.', 26],
+      [1, 'Adults should decide for themselves how to divide paid work and caregiving in their household.', 15],
+      [-1, 'Community venues should follow a shared standard on music and entertainment at celebrations they host.', 30]
     ]
   }
 ];
 
+const questionsPerAxis = axes[0].items.length;
+const minimumScored = 3;
+// Each item's final number is its position in the original 75-question quiz.
 const questions = axes.flatMap((axis, axisIndex) =>
-  axis.items.map(([direction, statement]) => ({axisIndex, direction, statement}))
-);
-
-// Fixed shuffle keeps a question's position stable across visits.
-let seed = 51409;
-for (let i = questions.length - 1; i > 0; i--) {
-  seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
-  const j = Math.floor(seed / 4294967296 * (i + 1));
-  [questions[i], questions[j]] = [questions[j], questions[i]];
-}
+  axis.items.map(([direction, statement, legacyIndex]) => ({axisIndex, direction, statement, legacyIndex}))
+).sort((first, second) => first.legacyIndex - second.legacyIndex);
 
 const $ = id => document.getElementById(id);
 const screens = ['welcome', 'quiz', 'results', 'review'];
 const headings = ['welcome-heading', 'question', 'result-title', 'review-title'];
-const storageKey = 'islamic-compass-v1';
+const storageKey = 'islamic-compass-v2';
 const options = new Map([[2,'Strongly agree'],[1,'Agree'],[0,'Neutral or mixed'],[-1,'Disagree'],[-2,'Strongly disagree'],[null,'Unsure / skip']]);
 const fresh = () => ({index: 0, answers: Array(questions.length).fill('unanswered')});
 
@@ -395,7 +345,19 @@ function load() {
       return value;
     }
   } catch {}
-  return fresh();
+
+  const state = fresh();
+  try {
+    const legacy = JSON.parse(localStorage.getItem('islamic-compass-v1'));
+    if (Array.isArray(legacy?.answers) && legacy.answers.length === 75) {
+      state.answers = questions.map(({legacyIndex}) => {
+        const answer = legacy.answers[legacyIndex];
+        return options.has(answer) ? answer : 'unanswered';
+      });
+      state.index = Math.max(0, state.answers.indexOf('unanswered'));
+    }
+  } catch {}
+  return state;
 }
 
 let state = load();
@@ -436,7 +398,7 @@ function showWelcome(focus = true) {
   $('restart-home').hidden = done === 0;
   $('welcome-meta').textContent = done
     ? done + ' of ' + questions.length + ' completed' + (canSave ? ' · Progress saved on this device' : ' · Progress available in this tab')
-    : 'About 12–18 minutes' + (canSave ? ' · Progress saved on this device' : '');
+    : 'About 5–8 minutes' + (canSave ? ' · Progress saved on this device' : '');
   show('welcome', focus);
 }
 
@@ -500,7 +462,7 @@ function calculate() {
   }
   return tallies.map(({sum, count}) => ({
     count,
-    value: count < 5 ? null : Math.sign(sum) * Math.round(Math.abs(sum) * 100 / (2 * count))
+    value: count < minimumScored ? null : Math.sign(sum) * Math.round(Math.abs(sum) * 100 / (2 * count))
   }));
 }
 
@@ -526,7 +488,7 @@ function showResults() {
   const y = scores[2].value;
   $('chart').hidden = x === null || y === null;
   if ($('chart').hidden) {
-    $('plot-summary').textContent = 'The map needs at least five scored statements on both government axes.';
+    $('plot-summary').textContent = 'The map needs at least three scored statements on both government axes.';
   } else {
     $('dot').style.left = (x + 100) / 2 + '%';
     $('dot').style.top = (100 - y) / 2 + '%';
@@ -552,14 +514,14 @@ function showResults() {
     card.append(ends);
     let explanation;
     if (score.value === null) {
-      explanation = 'Scored ' + score.count + ' of 15. Answer at least five for a score.';
+      explanation = 'Scored ' + score.count + ' of ' + questionsPerAxis + '. Answer at least three for a score.';
     } else if (Math.abs(score.value) <= 10) {
       explanation = 'Your total lands close to the midpoint.';
     } else {
       explanation = axis.about[Number(score.value > 0)];
     }
-    if (score.value !== null && score.count < 15) {
-      explanation += ' Based on ' + score.count + ' of 15 statements.';
+    if (score.value !== null && score.count < questionsPerAxis) {
+      explanation += ' Based on ' + score.count + ' of ' + questionsPerAxis + ' statements.';
     }
     card.append(element('p', 'axis-explanation', explanation));
     $('axis-results').append(card);
