@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#18342c">
+<meta name="description" content="A 75-question compass for exploring your views on Islamic law, government, economics, and community life.">
+<title>Islamic Compass</title>
+<style>
+:root {
+  color-scheme: light;
+  --paper: #f4f2e9;
+  --surface: #fffdf6;
+  --ink: #152d26;
+  --muted: #4e6057;
+  --line: #d5dcd1;
+  --green: #1b503e;
+  --deep: #18342c;
+  --pale: #e8eee3;
+  --gold: #e4c48c;
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font: 1rem/1.55 var(--sans); color: var(--ink); background: var(--paper); min-width: 280px; }
+button { font: inherit; cursor: pointer; }
+button:disabled { cursor: default; opacity: .45; }
+:focus-visible { outline: 3px solid #9c670b; outline-offset: 4px; }
+.screen-heading:focus { outline: none; }
+[hidden] { display: none !important; }
+.wrap { width: min(100% - 2rem, 65rem); margin: 0 auto; }
+.site-header { background: var(--deep); color: #f8f6ec; border-bottom: 1px solid #ffffff2a; }
+.header-inner { min-height: 4.1rem; display: flex; align-items: center; justify-content: space-between; gap: .8rem; }
+.brand { display: inline-flex; align-items: center; gap: .6rem; font-weight: 700; letter-spacing: .01em; }
+.brand-mark { width: 1.55rem; height: 1.55rem; border: 1px solid var(--gold); border-radius: 50%; display: grid; place-items: center; color: var(--gold); font-size: 1.18rem; line-height: 1; }
+.header-meta { color: #e1e8db; font-size: .88rem; }
+.hero { color: #fbf8ef; background: radial-gradient(ellipse at 78% 40%, #2b5144, transparent 56%), var(--deep); }
+.hero-inner { min-height: 27rem; padding: 3.4rem 0; display: grid; grid-template-columns: 1.35fr 1fr; align-items: center; gap: 2.5rem; }
+h1,h2,h3,p { margin: 0; }
+h1,h2 { font-family: var(--serif); font-weight: 500; line-height: 1.12; text-wrap: balance; }
+.hero h1 { font-size: clamp(3rem, 8vw, 6.1rem); letter-spacing: -.065em; }
+.hero p { font-size: clamp(1.04rem, 2vw, 1.25rem); color: #edf2e8; margin: 1.15rem 0 1.5rem; max-width: 34rem; }
+.action-row { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.btn { padding: .7rem 1.05rem; min-height: 2.85rem; border: 1px solid var(--line); border-radius: .65rem; background: var(--surface); color: var(--ink); font-weight: 650; }
+.btn:hover:not(:disabled) { background: var(--pale); }
+.btn.primary { background: var(--green); color: white; border-color: var(--green); }
+.btn.primary:hover { background: #123e2f; }
+.hero .btn.primary { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.hero .btn.primary:hover { background: #f3d79f; }
+.hero .btn.secondary { background: transparent; color: white; border-color: #d9e1d089; }
+.hero .btn.secondary:hover { background: #ffffff12; }
+.hero :focus-visible { outline-color: var(--gold); }
+.hero-meta { display: block; margin-top: .9rem; color: #e3e9da; font-size: .875rem; }
+.rose { position: relative; width: min(100%, 22rem); aspect-ratio: 1; margin: auto; display: grid; place-items: center; }
+.rose::before { content: ''; position: absolute; inset: 7%; border-radius: 50%; background: repeating-conic-gradient(from -.35deg, #e4c48c75 0deg .7deg, transparent .7deg 10deg); mask-image: radial-gradient(circle, transparent 0 63%, black 63.5% 70%, transparent 70.5%); }
+.ring { position: absolute; inset: 7%; border: 1px solid #e4c48c86; border-radius: 50%; }
+.ring:nth-child(2) { inset: 13%; border-color: #e4c48c52; }
+.ring:nth-child(3) { inset: 23%; border-color: #e4c48c42; }
+.cross { position: absolute; inset: 17%; background: linear-gradient(#e4c48c42,#e4c48c42) center/1px 100% no-repeat, linear-gradient(#e4c48c42,#e4c48c42) center/100% 1px no-repeat; }
+.needle { grid-area: 1 / 1; height: 66%; width: 17%; transform: rotate(30deg); background: linear-gradient(90deg,#eed6a3 50%,#d1ab6d 50%) top/100% 50% no-repeat, linear-gradient(90deg,#709684 50%,#adc3b2 50%) bottom/100% 50% no-repeat; clip-path: polygon(50% 0,100% 50%,50% 100%,0 50%); }
+.pivot { grid-area: 1 / 1; height: 6%; aspect-ratio: 1; z-index: 1; border-radius: 50%; background: var(--deep); border: 1px solid var(--gold); }
+.cardinal { position: absolute; font-family: var(--serif); color: #f2d599; font-size: .94rem; line-height: 1; }
+.north { top: 0; }.south { bottom: 0; }.east { right: 0; }.west { left: 0; }
+.intro { padding: 2.2rem 0 3rem; }
+.intro h2, .result h1, .review h1 { font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: -.035em; }
+.axis-list { display: grid; grid-template-columns: repeat(auto-fit,minmax(10rem,1fr)); gap: .55rem; list-style: none; padding: 0; margin: 1.05rem 0; }
+.axis-list li { border: 1px solid var(--line); background: var(--surface); border-radius: .65rem; padding: .6rem .75rem; font-weight: 650; }
+.note { color: var(--muted); max-width: 48rem; }
+.content { width: min(100% - 2rem, 51rem); margin: 0 auto; padding: clamp(1.15rem,4vw,2.8rem) 0 3rem; }
+.panel { border: 1px solid var(--line); background: var(--surface); border-radius: 1rem; padding: clamp(1rem,4vw,2rem); box-shadow: 0 8px 25px #152d2608; }
+.eyebrow { color: var(--green); font-size: .88rem; font-weight: 750; letter-spacing: .055em; text-transform: uppercase; }
+.quiz-status { display: flex; justify-content: space-between; gap: .6rem; color: var(--muted); font-size: .9rem; font-weight: 650; margin-bottom: .4rem; }
+progress { display: block; width: 100%; height: .52rem; appearance: none; border: 0; border-radius: 2rem; overflow: hidden; background: #dce5d9; margin: 0 0 1.05rem; }
+progress::-webkit-progress-bar { background: #dce5d9; }
+progress::-webkit-progress-value { background: var(--green); }
+progress::-moz-progress-bar { background: var(--green); }
+.question { margin: .6rem 0 1.2rem; font-size: clamp(1.5rem,4vw,2.5rem); letter-spacing: -.025em; max-width: 36rem; text-wrap: pretty; }
+.answers { display: grid; gap: .43rem; }
+.choice { --tint: #f5f5ec; --border: #d7dcd2; display: flex; align-items: center; justify-content: space-between; text-align: left; gap: .4rem; width: 100%; min-height: 2.8rem; padding: .54rem .85rem; border: 1px solid var(--border); color: var(--ink); border-radius: .55rem; background: var(--tint); font-weight: 650; }
+.choice:hover { border-color: var(--green); }
+.choice[aria-pressed="true"] { border: 2px solid var(--green); padding: calc(.54rem - 1px) calc(.85rem - 1px); }
+.choice[aria-pressed="true"] .key { color: var(--green); font-weight: 800; }
+.choice[data-answer="2"] { --tint: #e4efe4; --border: #adc5b2; }
+.choice[data-answer="1"] { --tint: #eef3e8; --border: #c3d1bf; }
+.choice[data-answer="-1"] { --tint: #f8eee6; --border: #e1cdbd; }
+.choice[data-answer="-2"] { --tint: #f5e7dd; --border: #dfc3ae; }
+.choice[data-answer="null"] { background: transparent; }
+.key { color: var(--muted); font-size: .84rem; font-weight: 500; }
+.quiz-nav { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; margin-top: .85rem; }
+.quiz-nav .btn { font-size: .9rem; min-height: 2.75rem; }
+.result-head, .review-head { display: grid; gap: .65rem; margin-bottom: 1.2rem; }
+.result h2 { font-size: clamp(1.55rem,3vw,2.05rem); }
+.result .panel + .panel { margin-top: 1rem; }
+.chart-heading { margin-bottom: .35rem; }
+.chart { margin: 1.2rem auto .45rem; width: min(100%, 29rem); display: grid; gap: .45rem; font-size: .88rem; font-weight: 700; }
+.chart > p { text-align: center; }
+.plot { position: relative; aspect-ratio: 1.44; border: 1px solid #a6b3a7; border-radius: .45rem; background-color: #f7f8f0; background-image: linear-gradient(to right,#cfdbce 1px,transparent 1px),linear-gradient(to bottom,#cfdbce 1px,transparent 1px); background-size: 10% 10%; }
+.plot::before,.plot::after { content: ''; position: absolute; background: #748d7d; }
+.plot::before { height: 100%; width: 1px; left: 50%; }
+.plot::after { width: 100%; height: 1px; top: 50%; }
+.dot { display: block; position: absolute; width: 1.12rem; height: 1.12rem; border-radius: 50%; border: 2px solid #fffdf6; background: var(--green); transform: translate(-50%,-50%); z-index: 1; box-shadow: 0 0 0 2px var(--green); }
+.horizontal-labels, .ends { display: flex; justify-content: space-between; gap: .8rem; }
+.horizontal-labels span:last-child,.ends span:last-child { text-align: right; }
+.plot-summary { color: var(--muted); text-align: center; font-size: .9rem; margin-top: .85rem; overflow-wrap: anywhere; }
+.axis-result { margin-top: 1.2rem; }
+.axis-result + .axis-result { border-top: 1px solid var(--line); padding-top: 1.05rem; }
+.axis-title { display: flex; gap: .4rem .8rem; flex-wrap: wrap; justify-content: space-between; align-items: baseline; }
+.axis-title h3 { font-size: 1.06rem; }
+.axis-value { color: var(--green); font-size: .9rem; font-weight: 750; }
+.track { height: .58rem; background: #e1e8dd; border-radius: 1rem; position: relative; margin: .65rem .28rem .5rem; }
+.track::before { content: ''; position: absolute; top: -.14rem; bottom: -.14rem; left: 50%; width: 1px; background: #61756a; }
+.track-marker { position: absolute; top: 50%; transform: translate(-50%,-50%); width: .95rem; height: .95rem; border-radius: 50%; background: var(--green); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--green); }
+.ends { color: var(--muted); font-size: .875rem; }
+.axis-explanation { margin-top: .45rem; font-size: .94rem; color: var(--muted); }
+details { margin-top: 1rem; }
+summary { cursor: pointer; font-weight: 700; }
+details p { margin-top: .55rem; }
+.review ol { margin: 0; padding-left: 1.75rem; }
+.review li { padding: .75rem 0 .95rem .25rem; }
+.review li + li { border-top: 1px solid var(--line); }
+.review-edit { display: flex; align-items: center; justify-content: space-between; gap: .6rem; margin-top: .45rem; }
+.review-edit span { color: var(--muted); }
+dialog { width: min(100% - 2rem, 32rem); border: 1px solid var(--line); border-radius: 1rem; background: var(--surface); padding: 1.25rem; color: var(--ink); }
+dialog::backdrop { background: #152d267d; }
+dialog p,.dialog-actions { margin-top: .8rem; }
+dialog textarea { width: 100%; min-height: 12rem; margin-top: .65rem; font: inherit; color: inherit; background: var(--paper); border: 1px solid var(--line); padding: .65rem; }
+.status { color: var(--muted); font-size: .9rem; min-height: 1.2em; }
+@media (max-width: 640px) {
+  .hero-inner { min-height: 0; padding: 2.5rem 0; grid-template-columns: 1fr; gap: 1.65rem; }
+  .rose { width: min(48%, 10rem); order: -1; margin: 0 auto; }
+  .hero h1 { letter-spacing: -.045em; }
+  .axis-list { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 380px) { .wrap,.content { width: calc(100% - 1.25rem); } .choice { padding-inline: .6rem; } .question { margin-bottom: .85rem; } }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">✧</span> Islamic Compass</div>
+    <span class="header-meta">75 questions</span>
+  </div>
+</header>
+<main>
+  <section id="welcome">
+    <div class="hero">
+      <div class="wrap hero-inner">
+        <div>
+          <h1 id="welcome-heading" class="screen-heading" tabindex="-1">Islamic Compass</h1>
+          <p>Where do you stand on Islamic law, political power, and public life? Respond to 75 statements and plot your views on five axes.</p>
+          <div class="action-row">
+            <button type="button" id="start" class="btn primary">Begin the test</button>
+            <button type="button" id="restart-home" class="btn secondary" hidden>Start over</button>
+          </div>
+          <span class="hero-meta" id="welcome-meta">About 12–18 minutes · Progress saved on this device</span>
+        </div>
+        <div class="rose" aria-hidden="true">
+          <span class="ring"></span><span class="ring"></span><span class="ring"></span><span class="cross"></span>
+          <span class="needle"></span><span class="pivot"></span>
+          <span class="cardinal north">N</span><span class="cardinal east">E</span><span class="cardinal south">S</span><span class="cardinal west">W</span>
+        </div>
+      </div>
+    </div>
+    <div class="wrap intro">
+      <h2>Five axes</h2>
+      <ul class="axis-list">
+        <li>Legal interpretation</li><li>Religion and the state</li><li>Political authority</li><li>Economic policy</li><li>Community life</li>
+      </ul>
+      <p class="note">Answer according to your own judgment. Choose “Unsure / skip” when you need more context or prefer to pass. The compass describes your policy preferences. It does not assess your faith or assign a sect.</p>
+    </div>
+  </section>
+  <section id="quiz" class="content" aria-labelledby="question" hidden>
+    <div class="quiz-status"><span id="question-count"></span><span id="answer-count"></span></div>
+    <progress id="progress" max="75" value="0" aria-label="Questions completed"></progress>
+    <div class="panel">
+      <p id="topic" class="eyebrow"></p>
+      <h2 id="question" class="question screen-heading" tabindex="-1"></h2>
+      <div class="answers" id="choices" aria-label="Answer choices">
+        <button type="button" class="choice" data-answer="2">Strongly agree <span class="key" aria-hidden="true">1</span></button>
+        <button type="button" class="choice" data-answer="1">Agree <span class="key" aria-hidden="true">2</span></button>
+        <button type="button" class="choice" data-answer="0">Neutral or mixed <span class="key" aria-hidden="true">3</span></button>
+        <button type="button" class="choice" data-answer="-1">Disagree <span class="key" aria-hidden="true">4</span></button>
+        <button type="button" class="choice" data-answer="-2">Strongly disagree <span class="key" aria-hidden="true">5</span></button>
+        <button type="button" class="choice" data-answer="null">Unsure / skip <span class="key" aria-hidden="true">U</span></button>
+      </div>
+      <nav class="quiz-nav" aria-label="Quiz navigation">
+        <button type="button" id="back" class="btn">Back</button>
+        <button type="button" id="leave" class="btn">Save &amp; exit</button>
+        <button type="button" id="next" class="btn" disabled>Next</button>
+      </nav>
+    </div>
+  </section>
+  <section id="results" class="content result" aria-labelledby="result-title" hidden>
+    <div class="result-head">
+      <h1 id="result-title" class="screen-heading" tabindex="-1">Your Islamic Compass</h1>
+      <p id="result-summary" class="note"></p>
+      <div class="action-row">
+        <button type="button" id="review-btn" class="btn primary">Review answers</button>
+        <button type="button" id="copy" class="btn">Copy results</button>
+        <button type="button" id="restart-results" class="btn">Start over</button>
+      </div>
+      <p id="copy-status" class="status" role="status" hidden></p>
+    </div>
+    <div class="panel">
+      <h2 class="chart-heading">Government compass</h2>
+      <p class="note">The horizontal axis shows the role of religion in the state. The vertical axis shows how political power is distributed.</p>
+      <div id="chart" class="chart" aria-hidden="true">
+        <p>Power checked and shared</p>
+        <div class="plot"><span id="dot" class="dot"></span></div>
+        <p>Power concentrated in leadership</p>
+        <div class="horizontal-labels"><span>Less direct religious oversight</span><span>More direct religious oversight</span></div>
+      </div>
+      <p id="plot-summary" class="plot-summary"></p>
+    </div>
+    <div class="panel">
+      <h2>All five axes</h2>
+      <div id="axis-results"></div>
+    </div>
+    <details class="panel">
+      <summary>How scoring works</summary>
+      <p>Each axis has 15 statements. Strong agreement and disagreement count for two points. Agreement and disagreement count for one. Neutral counts as zero. Some statements are scored in reverse so agreement can move the score toward either end of an axis.</p>
+      <p>Each total is divided by the maximum possible for the statements you scored, then scaled from −100 to +100. The left and lower ends are negative. Skipped answers are excluded. An axis appears once you score at least five statements on it.</p>
+      <p>A score near the middle can reflect consistently moderate answers or strong views that pull in different directions. Use your answer review to see which statements mattered to you.</p>
+    </details>
+  </section>
+  <section id="review" class="content review" aria-labelledby="review-title" hidden>
+    <div class="review-head">
+      <h1 id="review-title" class="screen-heading" tabindex="-1">Your answers</h1>
+      <p class="note">Edit any answer to update your compass.</p>
+      <div><button type="button" id="return-results" class="btn primary">Back to results</button></div>
+    </div>
+    <div class="panel"><ol id="review-list"></ol></div>
+  </section>
+</main>
+<dialog id="reset-dialog" aria-labelledby="reset-title">
+  <form method="dialog">
+    <h2 id="reset-title">Start a new test?</h2>
+    <p>This clears your current answers on this device.</p>
+    <div class="action-row dialog-actions">
+      <button class="btn" value="cancel" autofocus>Keep my answers</button>
+      <button class="btn primary" value="reset">Clear and start</button>
+    </div>
+  </form>
+</dialog>
+<dialog id="share-dialog" aria-labelledby="share-title">
+  <form method="dialog">
+    <h2 id="share-title">Copy your results</h2>
+    <p>Select and copy the text below.</p>
+    <textarea id="share-text" aria-label="Results text" readonly></textarea>
+    <div class="dialog-actions"><button class="btn primary">Done</button></div>
+  </form>
+</dialog>
+<noscript><p class="wrap">Enable JavaScript in your browser to take the test.</p></noscript>
+<script>
+'use strict';
+
+const axes = [
+  {
+    name: 'Legal interpretation',
+    ends: ['Established legal precedent', 'Contextual legal reasoning'],
+    about: ['You give established schools and recognized legal opinions greater weight when applying Islamic law.', 'You give qualified scholars greater latitude to reconsider legal applications as circumstances change.'],
+    items: [
+      [1, 'When a new technology changes how a rule affects people, qualified scholars should reconsider its application.'],
+      [-1, 'Ordinary Muslims should normally follow a single recognized school of Islamic law in their day-to-day practice.'],
+      [1, 'A religious ruling with strong textual support from another school should be available to people who normally follow a different school.'],
+      [-1, 'When scholars disagree about the purpose of a rule, a well-established legal opinion should carry more weight than a new interpretation.'],
+      [1, 'Local customs should influence how Islamic contracts are understood where the sources leave room for interpretation.'],
+      [-1, 'When teaching Islamic law to beginners, teachers should start with the standard rulings of one school before introducing competing views.'],
+      [1, 'When weighing rulings on a new medical technology, jurists should give evidence from clinicians significant weight.'],
+      [-1, 'When modern legal scholars disagree, continuity with the community’s established practice should usually break the tie.'],
+      [1, 'A fatwa council should revisit an inherited analogy if the facts that made the cases similar no longer hold.'],
+      [-1, 'Scholars updating a standard marriage contract should keep its inherited legal form where it remains workable.'],
+      [1, 'Qualified scholars should be willing to revisit a long-standing ruling if its application repeatedly produces a harm the ruling was meant to prevent.'],
+      [-1, 'Qualified jurists should set a higher bar for adopting a novel ruling than for choosing a recognized minority opinion.'],
+      [1, 'Fatwa councils in different countries can reasonably reach different answers about the same financial product when local conditions differ.'],
+      [-1, 'A ruling accepted across several legal schools should carry a strong presumption in its favor when facts and circumstances are much the same.'],
+      [1, 'When a modern dispute has no clear precedent, scholars should be willing to propose a ruling based on the broader purposes of Islamic law.']
+    ]
+  },
+  {
+    name: 'Religion and the state',
+    ends: ['Less direct religious oversight', 'More direct religious oversight'],
+    about: ['You favor greater discretion for civil institutions when they make public policy.', 'You favor giving Islamic law and religious institutions a more direct role in government.'],
+    items: [
+      [1, 'Islamic law should be an explicit constitutional source for evaluating legislation.'],
+      [-1, 'A council of religious scholars should advise lawmakers without having the power to block legislation.'],
+      [1, 'A court should be able to invalidate a statute solely on the basis that it conflicts with a constitutionally recognized principle of Islamic law.'],
+      [-1, 'A civil marriage contract should give willing adult spouses full legal recognition regardless of whether they choose a religious ceremony.'],
+      [1, 'Government should be responsible for collecting and distributing zakat, the obligatory alms owed by eligible Muslims.'],
+      [-1, 'Public office should be open to qualified citizens regardless of their religion.'],
+      [1, 'A national regulator should be able to deny financial products a license based on an Islamic finance standard.'],
+      [-1, 'Muslim families should be free to use the ordinary civil courts for inheritance disputes even when a religious forum is available.'],
+      [1, 'A national curriculum should require Muslim students in public schools to study Islamic jurisprudence.'],
+      [-1, 'Religious congregations should choose their own prayer leaders without routine state approval.'],
+      [1, 'Publicly funded religious scholars should routinely review proposed family laws for consistency with Islamic jurisprudence.'],
+      [-1, 'Public agencies should justify rules binding all citizens in terms accessible to people of any faith.'],
+      [1, 'The state should be able to require Muslim-owned businesses to accommodate communal Friday prayers.'],
+      [-1, 'Public arts grants should be open to applicants without a religious review of their work.'],
+      [1, 'The state should set national standards for official training and certification of imams.']
+    ]
+  },
+  {
+    name: 'Political authority',
+    ends: ['Power concentrated in leadership', 'Power checked and shared'],
+    about: ['You favor giving national leaders more discretion and keeping key decisions centralized.', 'You favor distributing power through representation, independent oversight, and local decision-making.'],
+    items: [
+      [1, 'Citizens should be able to replace the national leadership through periodic competitive elections.'],
+      [-1, 'An executive should be able to put an urgent policy into effect without first getting assembly approval, subject to a later vote.'],
+      [1, 'An elected assembly should have final authority over the annual budget.'],
+      [-1, 'Local leaders should generally be appointed by the national government to encourage consistent public services across regions.'],
+      [1, 'Independent courts should be able to review executive orders even during a declared emergency.'],
+      [-1, 'A chief executive chosen by a council of qualified representatives can be preferable to one elected by a direct national vote.'],
+      [1, 'Local councils should control a meaningful share of local taxes and spending.'],
+      [-1, 'Experienced executives should be eligible to remain in office without a fixed term limit.'],
+      [1, 'Opposition parties should be free to organize openly and compete for power under the same rules as governing parties.'],
+      [-1, 'The executive should have wide discretion to appoint ministers without confirmation hearings.'],
+      [1, 'Citizens should be able to petition for a binding public vote on major constitutional changes.'],
+      [-1, 'The constitution should give the executive a strong veto even when a large legislative majority supports a bill.'],
+      [1, 'A public auditor should be able to publish findings about senior officials without executive permission.'],
+      [-1, 'When national and local authorities disagree on a matter of domestic policy, the national government should normally have the final word.'],
+      [1, 'A legislature should be able to replace a government that loses its confidence before the next regular election.']
+    ]
+  },
+  {
+    name: 'Economic policy',
+    ends: ['Market-led allocation', 'Public planning and provision'],
+    about: ['You favor allocating more resources through market prices and private enterprise.', 'You favor directing more resources through public planning, ownership, or provision.'],
+    items: [
+      [1, 'Public electricity and water networks should generally be publicly owned.'],
+      [-1, 'Outside emergencies or abuse of market power, sellers should be free to set staple-food prices.'],
+      [1, 'State-owned enterprises should be required to meet binding national targets for production or investment.'],
+      [-1, 'Privately owned firms should be allowed to compete in most industries where state-owned firms operate.'],
+      [1, 'Public enterprises should give worker representatives a formal role in management decisions.'],
+      [-1, 'Government assistance for low-income households should usually take the form of cash they can spend in the market.'],
+      [1, 'The state should guarantee basic healthcare through a universal publicly financed system.'],
+      [-1, 'Charitable endowments and nonprofit clinics should have substantial discretion to run services independently of national economic plans.'],
+      [1, 'Government should use profits from publicly owned natural resources to fund a regular citizen dividend or universal services.'],
+      [-1, 'Decisions about what factories produce should generally be left to businesses and their customers.'],
+      [1, 'When housing costs rise sharply, government should build affordable homes directly at a large scale.'],
+      [-1, 'Governments should generally use competitive private builders for publicly funded infrastructure.'],
+      [1, 'A public employment program should offer a job to anyone unable to find one in the private sector.'],
+      [-1, 'As a general rule, people should need no occupational license for low-risk trades.'],
+      [1, 'The government should require large firms that receive public subsidies to meet wage and local hiring targets.']
+    ]
+  },
+  {
+    name: 'Community life',
+    ends: ['Shared communal expectations', 'Household and individual discretion'],
+    about: ['You favor common community expectations in shared spaces and institutions.', 'You favor giving households and individuals more discretion over social arrangements.'],
+    items: [
+      [1, 'Muslim community centers should offer comparable activities at different levels of gender separation so families can choose.'],
+      [-1, 'Stores serving a predominantly Muslim neighborhood should generally close during Friday congregational prayer.'],
+      [1, 'Schools should let families choose among several dress options when each meets a common modesty standard.'],
+      [-1, 'Older relatives should normally have a meaningful say in a young adult’s choice of spouse.'],
+      [1, 'An adult couple and their parents should be equally respected whether the couple chooses to live independently or in a multigenerational household.'],
+      [-1, 'Schools in a predominantly Muslim community should set aside part of the day for communal prayer for Muslim students.'],
+      [1, 'Community organizations should give households flexibility about how they meet common volunteer and charitable commitments.'],
+      [-1, 'A neighborhood association should be able to adopt stricter modest dress rules for its own events than nearby associations use.'],
+      [1, 'Schools should let families decide whether their children join optional religious celebrations.'],
+      [-1, 'Local shops should follow shared neighborhood expectations for their Ramadan business hours.'],
+      [1, 'Adults should decide for themselves how to divide paid work and caregiving in their household.'],
+      [-1, 'Youth organizations should generally agree on common supervision rules for social events across the community.'],
+      [1, 'Public libraries in a predominantly Muslim neighborhood should let families choose among books that reflect different approaches to family life.'],
+      [-1, 'Community venues should follow a shared standard on music and entertainment at celebrations they host.'],
+      [1, 'Neighborhoods should accommodate different customary ways of celebrating Eid when practical.']
+    ]
+  }
+];
+
+const questions = axes.flatMap((axis, axisIndex) =>
+  axis.items.map(([direction, statement]) => ({axisIndex, direction, statement}))
+);
+
+// Fixed shuffle keeps a question's position stable across visits.
+let seed = 51409;
+for (let i = questions.length - 1; i > 0; i--) {
+  seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+  const j = Math.floor(seed / 4294967296 * (i + 1));
+  [questions[i], questions[j]] = [questions[j], questions[i]];
+}
+
+const $ = id => document.getElementById(id);
+const screens = ['welcome', 'quiz', 'results', 'review'];
+const headings = ['welcome-heading', 'question', 'result-title', 'review-title'];
+const storageKey = 'islamic-compass-v1';
+const options = new Map([[2,'Strongly agree'],[1,'Agree'],[0,'Neutral or mixed'],[-1,'Disagree'],[-2,'Strongly disagree'],[null,'Unsure / skip']]);
+const fresh = () => ({index: 0, answers: Array(questions.length).fill('unanswered')});
+
+function load() {
+  try {
+    const value = JSON.parse(localStorage.getItem(storageKey));
+    if (value && Array.isArray(value.answers) && value.answers.length === questions.length &&
+        value.answers.every(answer => answer === 'unanswered' || options.has(answer)) &&
+        Number.isInteger(value.index) && questions[value.index]) {
+      return value;
+    }
+  } catch {}
+  return fresh();
+}
+
+let state = load();
+let canSave = true;
+try {
+  localStorage.setItem(storageKey, JSON.stringify(state));
+} catch {
+  canSave = false;
+}
+
+let screen = 'welcome';
+let reviewEdit = false;
+
+function save() {
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(state));
+  } catch {
+    canSave = false;
+  }
+}
+
+function completedCount() {
+  return state.answers.filter(answer => answer !== 'unanswered').length;
+}
+
+function show(id, focus = true) {
+  screen = id;
+  screens.forEach(name => { $(name).hidden = name !== id; });
+  if (focus) {
+    window.scrollTo(0, 0);
+    $(headings[screens.indexOf(id)]).focus({preventScroll: true});
+  }
+}
+
+function showWelcome(focus = true) {
+  const done = completedCount();
+  $('start').textContent = done === questions.length ? 'View my results' : done ? 'Resume the test' : 'Begin the test';
+  $('restart-home').hidden = done === 0;
+  $('welcome-meta').textContent = done
+    ? done + ' of ' + questions.length + ' completed' + (canSave ? ' · Progress saved on this device' : ' · Progress available in this tab')
+    : 'About 12–18 minutes' + (canSave ? ' · Progress saved on this device' : '');
+  show('welcome', focus);
+}
+
+function showQuestion() {
+  const {index, answers} = state;
+  const question = questions[index];
+  const done = completedCount();
+  $('question-count').textContent = 'Question ' + (index + 1) + ' of ' + questions.length;
+  $('answer-count').textContent = done + ' completed';
+  $('progress').value = done;
+  $('topic').textContent = axes[question.axisIndex].name;
+  $('question').textContent = question.statement;
+  for (const button of $('choices').querySelectorAll('button')) {
+    button.setAttribute('aria-pressed', String(answers[index] === JSON.parse(button.dataset.answer)));
+  }
+  $('back').textContent = reviewEdit ? 'Cancel edit' : 'Back';
+  $('back').disabled = !reviewEdit && index === 0;
+  $('leave').hidden = reviewEdit;
+  $('leave').textContent = canSave ? 'Save & exit' : 'Exit to start';
+  $('next').hidden = reviewEdit;
+  $('next').textContent = index === questions.length - 1 ? 'See results' : 'Next';
+  $('next').disabled = answers[index] === 'unanswered';
+  show('quiz');
+}
+
+function advance() {
+  if (state.answers[state.index] === 'unanswered') return;
+  if (state.index + 1 < questions.length) {
+    state.index++;
+  } else {
+    const firstUnanswered = state.answers.indexOf('unanswered');
+    if (firstUnanswered === -1) {
+      showResults();
+      return;
+    }
+    state.index = firstUnanswered;
+  }
+  save();
+  showQuestion();
+}
+
+function answer(value) {
+  state.answers[state.index] = value;
+  save();
+  if (reviewEdit) {
+    reviewEdit = false;
+    showReview(state.index);
+  } else {
+    advance();
+  }
+}
+
+function calculate() {
+  const tallies = axes.map(() => ({sum: 0, count: 0}));
+  for (let i = 0; i < questions.length; i++) {
+    const value = state.answers[i];
+    if (typeof value !== 'number') continue;
+    const {axisIndex, direction} = questions[i];
+    tallies[axisIndex].sum += value * direction;
+    tallies[axisIndex].count++;
+  }
+  return tallies.map(({sum, count}) => ({
+    count,
+    value: count < 5 ? null : Math.sign(sum) * Math.round(Math.abs(sum) * 100 / (2 * count))
+  }));
+}
+
+function describe(axis, score) {
+  if (score.value === null) return 'Insufficient answers';
+  if (score.value === 0) return 'Centered';
+  return Math.abs(score.value) + ' toward ' + axis.ends[Number(score.value > 0)].toLowerCase();
+}
+
+function element(tag, className, value) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (value !== undefined) node.textContent = value;
+  return node;
+}
+
+function showResults() {
+  const scores = calculate();
+  const skipped = state.answers.filter(value => value === null).length;
+  $('result-summary').textContent = (questions.length - skipped) + ' scored · ' + skipped + ' skipped';
+  $('copy-status').hidden = true;
+  const x = scores[1].value;
+  const y = scores[2].value;
+  $('chart').hidden = x === null || y === null;
+  if ($('chart').hidden) {
+    $('plot-summary').textContent = 'The map needs at least five scored statements on both government axes.';
+  } else {
+    $('dot').style.left = (x + 100) / 2 + '%';
+    $('dot').style.top = (100 - y) / 2 + '%';
+    $('plot-summary').textContent = 'Horizontal ' + x + ' · Vertical ' + y + ' · Each axis runs from −100 to +100';
+  }
+  $('axis-results').replaceChildren();
+  axes.forEach((axis, index) => {
+    const score = scores[index];
+    const card = element('article', 'axis-result');
+    const title = element('div', 'axis-title');
+    title.append(element('h3', '', axis.name), element('span', 'axis-value', describe(axis, score)));
+    card.append(title);
+    if (score.value !== null) {
+      const track = element('div', 'track');
+      const marker = element('span', 'track-marker');
+      marker.style.left = (score.value + 100) / 2 + '%';
+      track.setAttribute('aria-hidden', 'true');
+      track.append(marker);
+      card.append(track);
+    }
+    const ends = element('div', 'ends');
+    ends.append(...axis.ends.map(value => element('span', '', value)));
+    card.append(ends);
+    let explanation;
+    if (score.value === null) {
+      explanation = 'Scored ' + score.count + ' of 15. Answer at least five for a score.';
+    } else if (Math.abs(score.value) <= 10) {
+      explanation = 'Your total lands close to the midpoint.';
+    } else {
+      explanation = axis.about[Number(score.value > 0)];
+    }
+    if (score.value !== null && score.count < 15) {
+      explanation += ' Based on ' + score.count + ' of 15 statements.';
+    }
+    card.append(element('p', 'axis-explanation', explanation));
+    $('axis-results').append(card);
+  });
+  show('results');
+}
+
+function showReview(editedIndex) {
+  const list = $('review-list');
+  list.replaceChildren();
+  questions.forEach(({statement}, index) => {
+    const item = element('li');
+    const controls = element('div', 'review-edit');
+    const edit = element('button', 'btn', 'Edit');
+    edit.type = 'button';
+    edit.id = 'edit-' + index;
+    edit.setAttribute('aria-label', 'Edit answer to question ' + (index + 1));
+    edit.onclick = () => {
+      state.index = index;
+      reviewEdit = true;
+      showQuestion();
+    };
+    controls.append(element('span', '', options.get(state.answers[index])), edit);
+    item.append(element('p', '', statement), controls);
+    list.append(item);
+  });
+  show('review', editedIndex === undefined);
+  if (editedIndex !== undefined) $('edit-' + editedIndex).focus();
+}
+
+$('start').onclick = () => completedCount() === questions.length ? showResults() : showQuestion();
+$('choices').onclick = event => {
+  const button = event.target.closest('button[data-answer]');
+  if (button) answer(JSON.parse(button.dataset.answer));
+};
+$('next').onclick = advance;
+$('back').onclick = () => {
+  if (reviewEdit) {
+    reviewEdit = false;
+    showReview(state.index);
+    return;
+  }
+  if (state.index > 0) state.index--;
+  save();
+  showQuestion();
+};
+$('leave').onclick = () => showWelcome();
+$('review-btn').onclick = () => showReview();
+$('return-results').onclick = showResults;
+$('restart-home').onclick = $('restart-results').onclick = () => {
+  $('reset-dialog').returnValue = '';
+  $('reset-dialog').showModal();
+};
+$('reset-dialog').addEventListener('close', () => {
+  if ($('reset-dialog').returnValue !== 'reset') return;
+  state = fresh();
+  reviewEdit = false;
+  save();
+  showQuestion();
+});
+$('copy').onclick = async () => {
+  const scores = calculate();
+  const message = ['Islamic Compass', $('result-summary').textContent,
+    ...axes.map((axis, index) => axis.name + ' — ' + describe(axis, scores[index]))].join('\n');
+  try {
+    await navigator.clipboard.writeText(message);
+    $('copy-status').textContent = 'Results copied.';
+    $('copy-status').hidden = false;
+  } catch {
+    $('share-text').value = message;
+    $('share-dialog').showModal();
+    $('share-text').focus();
+    $('share-text').select();
+  }
+};
+document.addEventListener('keydown', event => {
+  if (screen !== 'quiz' || event.repeat || event.altKey || event.ctrlKey || event.metaKey ||
+      $('reset-dialog').open || $('share-dialog').open) return;
+  const answersByKey = {'1':2, '2':1, '3':0, '4':-1, '5':-2, 'u':null};
+  const key = event.key.toLowerCase();
+  if (!Object.hasOwn(answersByKey, key)) return;
+  event.preventDefault();
+  answer(answersByKey[key]);
+});
+
+showWelcome(false);
+</script>
+</body>
+</html>
